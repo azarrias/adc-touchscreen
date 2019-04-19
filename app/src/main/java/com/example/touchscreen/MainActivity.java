@@ -19,7 +19,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         TextView tvOutput = findViewById(R.id.tv_output);
-        tvOutput.append(event.toString() + "\n");
+        String actions[] = { "ACTION_DOWN", "ACTION_UP", "ACTION_MOVE", "ACTION_CANCEL",
+                "ACTION_OUTSIDE", "ACTION_POINTER_DOWN", "ACTION_POINTER_UP" };
+        int action = event.getAction();
+        int actionCode = action & MotionEvent.ACTION_MASK;
+        int pointerIndex = (action & MotionEvent.ACTION_POINTER_INDEX_MASK)
+                >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
+        tvOutput.append(actions[actionCode]);
+        tvOutput.append(" pointer index:" + pointerIndex);
+        for (int i = 0; i < event.getPointerCount(); i++) {
+            tvOutput.append(" pointer id:" + event.getPointerId(i) +
+                    " x:" + event.getX(i) + " y:" + event.getY(i));
+        }
+        tvOutput.append("\n");
         return true;
     }
 }
